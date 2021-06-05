@@ -1,0 +1,88 @@
+<html>
+
+<title>Domain Model</title>
+
+<h2>Shortest Path Finding</h2>
+
+
+<p><span id="demo1"></span></p>
+
+<p>The Shortest Path is = <span id="demo2"></span></p>
+
+
+
+<script>
+
+var places = { A:{name:"A",val:0,vertex:{ B:["AB",6],C:["AC",3] }} , B:{name:"B",val:0,vertex:{ A:["BA",6],C:["BC",2]} }, 
+				
+				C:{name:"C",val:0,vertex:{ A:["CA",3],B:["CB",2]} }   };
+
+
+var z = "A"; //starting place
+
+var p = "A"; //ending place
+
+
+var clone = { 1:{ path:[z],visitededge:[],value:[0] } };
+
+
+
+var a = 1;
+
+i = a;
+
+allpaths(); 
+
+function allpaths() { 
+
+for ( i = a; i <= Object.keys(clone).length; i++ ) { console.log(i,Object.keys(clone).length);
+
+ 
+	if( clone[i].path.length > 1 && clone[i].path[clone[i].path.length-1] !== p || clone[i].path.length == 1 && clone[i].path[0] == p ){
+		
+		x = clone[i].path[clone[i].path.length-1]; node = Object.keys(places[x].vertex);  
+		
+		
+		
+			for ( j = 0; j < node.length; j++ ) {  
+				
+				
+				if ( j == 0 ) { edge = places[x].vertex[node[j]][0]; if ( !clone[i].visitededge.includes(edge) ){ 
+
+				clone[i].path[clone[i].path.length] = node[j]; clone[i].visitededge[clone[i].visitededge.length] = edge; clone[i].value[0] = clone[i].value[0] + places[x].vertex[node[j]][1]; 
+				
+				 }}
+				
+				 
+				
+				else    {  n = Object.keys(clone).length; clone[n+1] = JSON.parse(JSON.stringify(clone[i])); clone[n+1].path.pop();  clone[n+1].visitededge.pop(); clone[n+1].value[0] = clone[n+1].value[0] - places[x].vertex[node[j-1]][1]; edge = places[x].vertex[node[j]][0]; 
+				
+						if ( !clone[n+1].visitededge.includes(edge) ){ clone[n+1].path[clone[n+1].path.length] = node[j]; clone[n+1].visitededge[clone[n+1].visitededge.length] = edge; 
+					
+						clone[n+1].value[0] = clone[n+1].value[0] + places[x].vertex[node[j]][1]; a = 1; allpaths(); }} 
+								
+			}   
+
+	} else  { return clone;  }
+
+	
+} 
+};
+
+
+console.log(clone);
+
+
+
+
+
+
+
+
+
+</script>
+
+</html>
+
+
+
