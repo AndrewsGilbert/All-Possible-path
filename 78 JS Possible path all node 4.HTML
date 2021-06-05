@@ -1,0 +1,97 @@
+<html>
+
+<title>Domain Model</title>
+
+<h2>Possible Paths Finding</h2>
+
+
+<p><span id="demo1"></span></p>
+
+
+
+
+
+<script>
+
+				
+var places = { A:{name:"A",vertex:{ B:["AB",6],C:["AC",3] }} , B:{name:"B",vertex:{ A:["BA",6],C:["BC",2]} }, 
+				
+				C:{name:"C",vertex:{ A:["CA",3],B:["CB",2]} }  };
+
+var z = "A"; //starting place
+
+var p = "A"; //ending place
+
+
+var clone = { 1:{ path:[z],visitededge:[],value:[0] } };
+
+
+
+var a = 1;
+
+i = a; 
+
+allpaths(); 
+
+function allpaths() { 
+
+for ( i = a; i <= Object.keys(clone).length; i++ ) { 
+
+ 
+	if( clone[i].path.length > 1 && clone[i].path[clone[i].path.length-1] !== p || clone[i].path.length == 1 && clone[i].path[0] == p ){ 
+		
+		x = clone[i].path[clone[i].path.length-1]; node = Object.keys(places[x].vertex);  
+		
+		
+		
+			for ( j = 0; j < node.length; j++ ) {  
+				
+				
+				if ( j == 0 ) { edge = places[x].vertex[node[j]][0]; if ( !clone[i].visitededge.includes(edge) ){ 
+
+				clone[i].path[clone[i].path.length] = node[j]; clone[i].visitededge[clone[i].visitededge.length] = edge; clone[i].value[0] = clone[i].value[0] + places[x].vertex[node[j]][1]; 
+				
+				 }}
+				
+				 
+				
+				else    { edge = places[x].vertex[node[j]][0];    if ( !clone[i].visitededge.includes(edge) ) {
+
+						n = Object.keys(clone).length; clone[n+1] = JSON.parse(JSON.stringify(clone[i])); clone[n+1].path.pop();  clone[n+1].visitededge.pop(); clone[n+1].value[0] = clone[n+1].value[0] - places[x].vertex[node[j-1]][1]; 
+				
+						clone[n+1].path[clone[n+1].path.length] = node[j]; clone[n+1].visitededge[clone[n+1].visitededge.length] = edge; 
+					
+						clone[n+1].value[0] = clone[n+1].value[0] + places[x].vertex[node[j]][1]; a = 1; allpaths(); }}  
+		
+			}   
+
+	}    
+
+	
+} return clone; };
+
+
+var way = "";
+
+function paths(clone){ 
+
+for ( i = 1; i <= Object.keys(clone).length; i++ ) { 
+
+way += "<br><br>The path  " + i + " is " + clone[i].path + " and value is "+ clone[i].value; }
+
+return way;
+
+};
+
+
+document.getElementById("demo1").innerHTML = paths(clone);
+
+
+
+
+</script>
+
+</html>
+
+
+
