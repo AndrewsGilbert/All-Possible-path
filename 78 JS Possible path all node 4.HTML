@@ -13,6 +13,8 @@
 
 <script>
 
+			
+																																
 				
 var places = { A:{name:"A",vertex:{ B:["AB",6],C:["AC",3] }} , B:{name:"B",vertex:{ A:["BA",6],C:["BC",2]} }, 
 				
@@ -49,19 +51,19 @@ for ( i = a; i <= Object.keys(clone).length; i++ ) {
 				
 				if ( j == 0 ) { edge = places[x].vertex[node[j]][0]; if ( !clone[i].visitededge.includes(edge) ){ 
 
-				clone[i].path[clone[i].path.length] = node[j]; clone[i].visitededge[clone[i].visitededge.length] = edge; clone[i].value[0] = clone[i].value[0] + places[x].vertex[node[j]][1]; 
+				clone[i].path.push(node[j]);  clone[i].visitededge.push(edge);  clone[i].value[0] = clone[i].value[0] + places[x].vertex[node[j]][1]; 
 				
 				 }}
 				
 				 
 				
-				else    { edge = places[x].vertex[node[j]][0];    if ( !clone[i].visitededge.includes(edge) ) {
+				else    { edge = places[x].vertex[node[j]][0];   if ( !clone[i].visitededge.includes(edge) ) {
 
-						n = Object.keys(clone).length; clone[n+1] = JSON.parse(JSON.stringify(clone[i])); clone[n+1].path.pop();  clone[n+1].visitededge.pop(); clone[n+1].value[0] = clone[n+1].value[0] - places[x].vertex[node[j-1]][1]; 
+						n = Object.keys(clone).length; clone[n+1] = JSON.parse(JSON.stringify(clone[i])); clone[n+1].path.pop();  clone[n+1].visitededge.pop(); clone[n+1].value[0] = clone[n+1].value[0] - places[x].vertex[node[0]][1]; 
 				
-						clone[n+1].path[clone[n+1].path.length] = node[j]; clone[n+1].visitededge[clone[n+1].visitededge.length] = edge; 
+						clone[n+1].path.push(node[j]);  clone[n+1].visitededge.push(edge); clone[n+1].value[0] = clone[n+1].value[0] + places[x].vertex[node[j]][1];
 					
-						clone[n+1].value[0] = clone[n+1].value[0] + places[x].vertex[node[j]][1]; a = 1; allpaths(); }}  
+						 if ( j == node.length-1 ) {a = i; allpaths();} }}  
 		
 			}   
 
@@ -70,6 +72,10 @@ for ( i = a; i <= Object.keys(clone).length; i++ ) {
 	
 } return clone; };
 
+
+
+
+console.log(clone);
 
 var way = "";
 
