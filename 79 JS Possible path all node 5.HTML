@@ -1,0 +1,132 @@
+<html>
+
+<title>Domain Model</title>
+
+<h2>Possible Paths Finding</h2>
+
+
+<p><span id="demo1"></span></p>
+
+
+
+
+
+<script>
+
+/*
+
+
+var places = { A:{name:"A",vertex:{ B:["AB",6],C:["AC",3] }} , B:{name:"B",vertex:{ A:["BA",6],C:["BC",2]} }, 
+				
+				C:{name:"C",vertex:{ A:["CA",3],B:["CB",2]} }  };
+				
+
+var places = { A:{name:"A",vertex:{ B:["AB",4],D:["AD",12] }} , B:{name:"B",vertex:{ A:["BA",4],C:["BC",10]} }, 
+				
+				C:{name:"C",vertex:{ D:["CD",8],B:["CB",10]} } ,D:{name:"D",vertex:{ A:["DA",12],C:["DC",8]} }  };
+				
+
+var places = { A:{name:"A",vertex:{ B:["AB",4],D:["AD",12] }} , B:{name:"B",vertex:{ A:["BA",4],C:["BC",10],D:["BD",1]} }, 
+				
+				C:{name:"C",vertex:{ D:["CD",8],B:["CB",10]} } ,D:{name:"D",vertex:{ A:["DA",12],C:["DC",8],B:["DB",1]} }  }; 
+				
+
+																															*/
+																															
+																															
+var places = { A:{name:"A",vertex:{ B:["AB",6],C:["AC",3] }} , B:{name:"B",vertex:{ A:["BA",6],C:["BC",2],D:["BD",4]} }, 
+				
+				C:{name:"C",vertex:{ A:["CA",3],B:["CB",2],E:["CE",5]}} , D:{name:"D",vertex:{ B:["DB",4],E:["DE",1]} },  
+				
+				E:{name:"E",vertex:{ D:["ED",1],C:["EC",5]} } };
+				
+
+var z = "A"; //starting place
+
+var p = "A"; //ending place
+
+
+var clone = { 1:{path:[z],value:[0],bool:false } };
+
+
+a = 1;
+
+allpaths(); 
+
+function allpaths() { 
+
+for ( i = a; i <= Object.keys(clone).length; i++ ) { 
+
+	if ( !clone[i].path.includes(p,1) ) { x = clone[i].path[clone[i].path.length-1];     nodes = Object.keys(places[x].vertex); 
+
+			  
+			for ( j = 0; j <= nodes.length; j++ ) {  if ( j == nodes.length ) { allpaths();}
+			
+				else if ( j == 0 ) { node = nodes[j]; 
+				
+					if ( !clone[i].path.includes(node) ){ clone[i].path.push(node);  clone[i].value[0] = clone[i].value[0] + places[x].vertex[node][1]; }
+					
+					else if ( node == p && clone[i].path.length == Object.keys(places).length ) { clone[i].path.push(node);  clone[i].value[0] = clone[i].value[0] + places[x].vertex[node][1]; clone[i].bool = true; }
+
+					else { clone[i].path.push(p); clone[i].value[0] = clone[i].value[0] + places[x].vertex[node][1]; }
+				}
+				
+				else  { node = nodes[j]; //console.log(i,j);
+				
+					if ( !clone[i].path.includes(node) ){  n = Object.keys(clone).length; clone[n+1] = JSON.parse(JSON.stringify(clone[i])); clone[n+1].path.pop();
+					
+						clone[n+1].value[0] = clone[n+1].value[0] - places[x].vertex[nodes[0]][1];
+						
+						clone[n+1].path.push(node);  clone[n+1].value[0] = clone[n+1].value[0] + places[x].vertex[node][1];
+					} 
+					
+					else if ( node == p && clone[i].path.length >= Object.keys(places).length ) { n = Object.keys(clone).length; clone[n+1] = JSON.parse(JSON.stringify(clone[i])); clone[n+1].path.pop();
+					
+							clone[n+1].value[0] = clone[n+1].value[0] - places[x].vertex[nodes[0]][1];
+							
+							clone[n+1].path.push(node);  clone[n+1].value[0] = clone[n+1].value[0] + places[x].vertex[node][1]; clone[n+1].bool = true;
+					}
+					
+					
+					
+				} 
+
+					
+			}	
+				
+	}	
+	
+} return clone;
+
+};
+				 
+
+		
+console.log(clone);
+
+var way = "";
+
+function paths(clone){ b=1;
+
+for ( i = 1; i <= Object.keys(clone).length; i++ ) { 
+
+	if ( clone[i].bool == true ) { 
+
+	way += "<br><br>The path  " + b + " is " + clone[i].path + " and value is "+ clone[i].value; b = a+1;} }
+
+return way;
+
+};
+
+
+document.getElementById("demo1").innerHTML = paths(clone);
+
+
+
+
+</script>
+
+</html>
+
+
+
