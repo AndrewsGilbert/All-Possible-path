@@ -1,0 +1,184 @@
+<html>
+
+<title>Domain Model</title>
+
+<h2>Possible Paths Finding</h2>
+
+
+<p><b>The Shortest Path:  </b><span id="demo2"></span></p>
+
+<p><b>The Shortest Path by visiting all the places:  </b><span id="demo3"></span></p>
+
+<p><b>All Possible paths:  </b><span id="demo1"></span></p>
+
+
+<script>
+
+/*
+
+
+var places = { A:{name:"A",vertex:{ B:6,C:3 } } , B:{name:"B",vertex:{ A:6,C:2 } }, 
+				
+				C:{name:"C",vertex:{ A:3,B:2} }  };
+				
+
+var places = { A:{name:"A",vertex:{ B:4,D:12 }} , B:{name:"B",vertex:{ A:4,C:10} }, 
+				
+				C:{name:"C",vertex:{ D:8,B:10} } ,D:{name:"D",vertex:{ A:12,C:8} }  };
+				
+				
+var places = { A:{name:"A",vertex:{ B:4,D:12 }} , B:{name:"B",vertex:{ A:4,C:10,D:1} }, 
+				
+				C:{name:"C",vertex:{ D:8,B:10} } ,D:{name:"D",vertex:{ A:12,C:8,B:1} }  };
+ 
+				
+				
+var places = { A:{name:"A",vertex:{ B:6,C:3 }} , B:{name:"B",vertex:{ A:6,C:2,D:4} }, 
+				
+				C:{name:"C",vertex:{ A:3,B:2,E:5}} , D:{name:"D",vertex:{ B:4,E:1} },  
+				
+				E:{name:"E",vertex:{ D:1,C:5} } };
+				
+				
+var places = { A:{name:"A",vertex:{ B:2,C:5 }} , B:{name:"B",vertex:{ A:2,C:2,D:1,E:7} }, 
+				
+				C:{name:"C",vertex:{ A:5,B:2,D:3}} , D:{name:"D",vertex:{ B:1,E:2,C:3,F:5} },  
+				
+				E:{name:"E",vertex:{ D:2,B:7,F:1} }, F:{name:"F",vertex:{ D:5,E:1} }};
+								
+																															*/
+																															
+																															
+var places = { A:{name:"A",vertex:{ B:6,C:3 } } , B:{name:"B",vertex:{ A:6,C:2 } }, 
+				
+				C:{name:"C",vertex:{ A:3,B:2} }  };
+				
+
+var src = "A"; 
+
+var end = "A"; 
+
+var temp_path = { path:[src],value:0,all_visited:false, status:false } 
+
+var store = {};
+
+
+
+function clone(tepath) { return JSON.parse(JSON.stringify(tepath)); }
+
+
+
+function allpaths(tepath) { 
+
+	var cur_ver = tepath.path[tepath.path.length-1];   
+			
+	var nodes = Object.keys(places[cur_ver].vertex);  
+	  
+		for ( j = 0; j < nodes.length; j++ ) {  
+			
+			var node = nodes[j]; 	
+			
+			if ( tepath.path.includes(node,1) ){ continue; }
+				
+			var new_tepath = clone(tepath); 
+				
+			new_tepath.path.push(node);  new_tepath.value = new_tepath.value + places[cur_ver].vertex[node]; 
+				
+			if ( node == end ) { new_tepath.status = true;	
+				
+				if ( new_tepath.path.length > Object.keys(places).length && src == end ) { new_tepath.all_visited = true; }
+						
+				else if ( new_tepath.path.length == Object.keys(places).length && src !== end ) { new_tepath.all_visited = true; }
+				
+				var v = Object.keys(store).length; store[v+1] = new_tepath; 
+			}
+
+			else { allpaths(new_tepath); }
+				
+		} 	
+				
+};
+				 
+
+allpaths(temp_path);	
+
+console.log(store);
+		
+
+					
+
+		
+
+
+/*
+
+function all_possible_paths(store){ 
+
+ var way = "";
+ var b = 1;	
+ 
+for ( i = 1; i <= Object.keys(store).length; i++ ) { 
+
+	if ( store[i].status == true ) { 
+
+	 way += "<br><br>The path  " + b + " is " + store[i].path + " and value is "+ store[i].value; b = b+1;} }
+
+return way;
+
+};
+
+document.getElementById("demo1").innerHTML = "<b> From " + z +" to " + p +" are </b>" + all_possible_paths(store);
+
+function shorestpath(store){ 
+
+	var value = [];
+	var key = [];
+	var way = "";
+
+for ( i = 1; i <= Object.keys(store).length; i++ ) { 
+
+	if ( store[i].status == true ) {  value.push(store[i].value); key.push(i); }
+
+}
+
+minval = Math.min.apply(null,value); ind = value.indexOf(minval);  id = key[ind];
+
+way ="<b> From " + z +" to " + p +" is => </b>" + store[id].path + " and value is "+ store[id].value; 
+
+return way;
+
+};
+
+document.getElementById("demo2").innerHTML = shorestpath(store);
+
+
+function shorestpath_allnode(store){ 
+
+	var value = [];
+	var key = [];
+	var way = "";
+ 
+for ( i = 1; i <= Object.keys(store).length; i++ ) { 
+
+	if ( store[i].status == true && store[i].all_visited == true  ) { value.push(store[i].value); key.push(i); }
+ }
+ 
+ minval = Math.min.apply(null,value); ind = value.indexOf(minval);  id = key[ind];
+
+way ="<b> From " + z +" to " + p +" is => </b>" +  store[id].path + " and value is "+ store[id].value; 
+
+return way;
+
+};
+
+document.getElementById("demo3").innerHTML = shorestpath_allnode(store);
+
+console.time();
+console.timeEnd(); */
+
+</script>
+
+</html>
+
+
+
